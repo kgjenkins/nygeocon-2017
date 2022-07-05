@@ -1,0 +1,244 @@
+<!DOCTYPE html><html><head><title></title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"><style type='text/css'>
+body {
+    font-family: 'Gentium Basic', 'Helvetica', 'Arial';
+    background:#000;
+    background-size:100%;
+    background-repeat:no-repeat;
+    color:#fff;
+    margin:0;
+    padding:0;
+    font-weight:bold;
+}
+
+h1, h2, h3, p {
+    margin:0;
+}
+
+em, b {
+    font-style:normal;
+    color:#0c0;
+    font-size:125%;
+}
+
+a {
+    color:#34d0e7;
+    text-decoration:none;
+}
+a:hover {
+    text-shadow:
+        0 0 32px #34d0e7;
+}
+
+img {
+    width:100%;
+}
+
+div {
+    cursor:pointer;
+    cursor:hand;
+    position:absolute;
+    top:0px;
+    left:0px;
+    padding:75px;
+    line-height:120%;
+    text-align:center;
+}
+
+div.left, ul {
+    text-align:left;
+}
+
+div.imageText {
+    text-shadow:0px 0px 20px #000;
+}
+</style><script type='text/javascript'>
+window.onload = function() {
+    var s = document.getElementsByTagName('div'), cur = 0, ti;
+    if (!s) return;
+
+    linkExternal();
+
+    function linkExternal() {
+        var a = document.getElementsByTagName('a');
+        for (var i = 0; i < a.length; i++) {
+            a[i].target = '_blank';
+        }
+    }
+
+    function go(n) {
+        cur = n;
+        var i = 1e3, e = s[n], t;
+        for (var k = 0; k < s.length; k++) s[k].style.display = 'none';
+        e.style.display = 'inline';
+        e.style.fontSize = i + 'px';
+        if (e.firstChild.nodeName === 'IMG') {
+            document.body.style.backgroundImage = 'url(' + e.firstChild.src + ')';
+            e.firstChild.style.display = 'none';
+            if ('classList' in e) e.classList.add('imageText');
+        } else {
+            document.body.style.backgroundImage = '';
+            document.body.style.backgroundColor = e.style.backgroundColor;
+        }
+        if (ti !== undefined) window.clearInterval(ti);
+        t = parseInt(e.getAttribute('time-to-next') || 0, 10);
+        if (t > 0) ti = window.setTimeout(fwd, (t * 1000));
+        while (
+            e.offsetWidth > window.innerWidth ||
+            e.offsetHeight > window.innerHeight) {
+            e.style.fontSize = (i -= 2) + 'px';
+            if (i < 0) break;
+        }
+        e.style.marginTop = ((window.innerHeight - e.offsetHeight) / 2) + 'px';
+        if (window.location.hash !== n) window.location.hash = n;
+        document.title = e.textContent || e.innerText;
+    }
+    document.onclick = function(e) {
+        if (e.shiftKey || e.altKey || e.shiftKey || e.button>0 || e.target.nodeName==='A') return;
+        go(++cur % (s.length));
+
+    };
+    function fwd() { go(Math.min(s.length - 1, ++cur)); }
+    function rev() { go(Math.max(0, --cur)); }
+    document.onkeydown = function(e) {
+        if (e.which === 39) fwd();
+        if (e.which === 37) rev();
+        if (e.which === 36) go(0); // home
+        if (e.which === 35) go(s.length-1); // end
+    };
+    document.ontouchstart = function(e) {
+        var x0 = e.changedTouches[0].pageX;
+        document.ontouchend = function(e) {
+            var x1 = e.changedTouches[0].pageX;
+            if (x1 - x0 < 0) fwd();
+            if (x1 - x0 > 0) rev();
+        };
+    };
+    function parse_hash() {
+        return Math.max(Math.min(
+            s.length - 1,
+            parseInt(window.location.hash.substring(1), 10)), 0);
+    }
+    if (window.location.hash) cur = parse_hash() || cur;
+    window.onhashchange = function() {
+        var c = parse_hash();
+        if (c !== cur) go(c);
+    };
+
+    go(cur);
+};
+</script></head><body>
+
+<!-- CUGIR, the Cornell University Geospatial Information Repository, has hosted geospatial data for New York state since 1998. After two decades in service, the CUGIR infrastructure has been retired and completely rebuilt using several open source components: PostGIS, GeoServer, Solr, and GeoBlacklight. This presentation will discuss the goals of the rebuild, and demonstrate how the new CUGIR provides a powerful discovery interface combining keyword- and map-based search. We'll see how search results can be filtered by facets such as topic, year, author, collection, or data type; how individual datasets can be previewed on the website, which allows even non-GIS users to explore the data on a map; and how to use WMS and WFS services to connect to CUGIR data without even downloading a zipfile.
+-->
+
+
+<div>Reintroducing <a href="http://cugir.library.cornell.edu/">CUGIR</a></div>
+<div><em>Keith Jenkins</em><br>GIS&nbsp;Librarian<br>Cornell&nbsp;University</div>
+
+<div><b>A brief history of CUGIR</b></div>
+<div><img src="image/cugir-romania.png"></div>
+
+<div>Back in 1996...</div>
+<div>Census TIGER/Line data on CD-ROM</div>
+<div><img src='image/tiger.png'></div>
+<div class='left'><b>T</b>opologically<br><b>I</b>ntegrated<br><b>G</b>eographic<br><b>E</b>ncoding and<br><b>R</b>eferencing</div>
+
+<div class='left'><b>C</b>ornell<br><b>U</b>niversity<br><b>G</b>eospatial<br><b>I</b>nformation<br><b>R</b>epository<br></div>
+
+<div>CUGIR&nbsp;1.0 1998</div>
+<div><img src='image/cugir-1998.png'></div>
+
+<div>CUGIR&nbsp;2.0 2006</div>
+<div><img src='image/cugir-2006.png'></div>
+
+<div>CUGIR&nbsp;3.0 2017</div>
+<div><img src='image/cugir-2017.png'></div>
+
+<div><b>Why did we make a new CUGIR?</b></div>
+<div>in other words...</div>
+<div><b>What was wrong with the old site?</b></div>
+<div><a href="http://cugir.mannlib.cornell.edu/search?querytext=tompkins+roads&submit=go&scope=cugir&include=datathemes&include=series&include=mapsheets&include=providers&include=features&include=topics&include=faqs&include=help">Search</a></div>
+<div><a href="http://cugir.mannlib.cornell.edu/mapbrowse.jsp?series=counties">Map search</a></div>
+<div>Many small datasets, split up by <a href="http://cugir.mannlib.cornell.edu/datatheme.jsp?id=126">county</a> or <a href="http://cugir.mannlib.cornell.edu/datatheme.jsp?id=23">quad</a></div>
+<div>.zip files within zipfiles</div>
+<div>.gz files within zipfiles</div>
+<div><img src="image/topo.png">USGS topographic maps (.tar.gz within a .zip, which extracted to a dozen small .tif files, which were a set of all the 5000-meter square tiles that overlapped the quad of the topo map the user had selected)</div>
+<div>e-mails</div>
+<div>How do I open a shapefile?</div>
+<div>How do I open an .e00 file?</div>
+<div>difficult to add new datasets</div>
+
+<div><b>How did we make the new CUGIR?</b></div>
+<div>Used high-quality open-source components...</div>
+<div>PostGIS (spatial&nbsp;database)</div>
+<div>GeoServer (web&nbsp;services)</div>
+<div>Solr (search&nbsp;index)</div>
+<div>GeoBlacklight (front-end interface)</div>
+
+<div><b>Some assembly required</b></div>
+<div>Data migration</div>
+<div>Metadata review and enhancement</div>
+<div>Python-based data ingest pipeline</div>
+<div>Local GeoBlacklight customizations</div>
+
+<div><b>Wow, that sounds like a lot of work!</b></div>
+<div>Yes, it&nbsp;was!</div>
+<div>But we had a great team that made it happen.</div>
+
+<div><b>Who is this amazing CUGIR Team?</b></div>
+<div><ul>
+    <li><b>Darcy Branchini</b> Senior UX Designer</li>
+    <li><b>Keith Jenkins</b> GIS Librarian</li>
+    <li><b>Huda Khan</b> Applications Programmer</li>
+    <li><b>Kevin Kidwell</b> UX Designer</li>
+    <li><b>Alan McCarty</b> DevOps Engineer</li>
+    <li><b>Jeff&nbsp;Piestrak</b>&nbsp;Digital&nbsp;Collections&nbsp;Specialist</li>
+</ul></div>
+
+
+<div><b>What's so great about the new CUGIR?</b></div>
+<div><a href="https://cugir.library.cornell.edu/?q=soil&utf8=%E2%9C%93">text+map search</a></div>
+<div><a href="https://cugir.library.cornell.edu/">filter or browse by facets</a></div>
+<div><a href="https://cugir.library.cornell.edu/catalog/cugir-008155">data previews</a></div>
+<div><a href="https://cugir.library.cornell.edu/catalog/cugir-008204">beautiful metadata</a></div>
+<div><a href="https://cugir.library.cornell.edu/catalog/cugir-007740">multiple download formats</a></div>
+<div><a href="https://cugir.library.cornell.edu/catalog/cugir-007949">additional custom formats</a></div>
+<div><a href="https://cugir.library.cornell.edu/catalog/cugir-008001">WMS</a><br>(web&nbsp;map&nbsp;services)</div>
+<div><a href="https://cugir.library.cornell.edu/catalog/cugir-008155">WFS</a><br>(web&nbsp;feature&nbsp;services)</div>
+<div>QGIS - Add WFS Layer<br><img src='image/wfs-1.png'></div>
+<div>Connect to CUGIR WFS<br><img src='image/wfs-2.png'></div>
+<div>Select layer from CUGIR<br><img src='image/wfs-3.png'></div>
+<div>Style and interact with WFS data<br><img src='image/wfs-4.png'></div>
+<div>Filter WFS data with a query<br><img src='image/wfs-5.png'></div>
+<div> <img src='image/wfs-6.png'></div>
+<div>WFS = <b>W</b>ay <b>F</b>aster than searching a website and downloading and unzipping a <b>S</b>hapefile</div>
+<div><a href="https://cul-it.github.io/cugir-help/">Help pages</a></div>
+<div><a href="https://cugir.library.cornell.edu/catalog/cugir-009000">National Elevation Dataset</a></div>
+<div><a href="http://cugir.library.cornell.edu/catalog/cugir-009001">USGS topographic maps</a></div>
+
+
+<div>fast downloads (files stored on Amazon&nbsp;S3)</div>
+<div>we plan to add much more data...</div>
+<div>newer updates of existing datasets</div>
+<div>while archiving older versions</div>
+<div>expand beyond NY (Cornell research worldwide)</div>
+<div>but still focus on New York</div>
+
+<div><b>New CUGIR website just launched October&nbsp;3</b></div>
+<div>But the old site is still available for now...</div>
+
+<div><b>What's wrong with the new site?</b></div>
+<div>it's not the same as the old site</div>
+<div>some external sites point to CUGIR datasets</div>
+<div>redirect old URLs</div>
+<div>finish migrating data</div>
+<div>.e00 files</div>
+<div>improve sort order of search results</div>
+<div>cross-reference datasets</div>
+<div>constantly improve the user experience</div>
+
+<div>cugir.library.cornell.edu</div>
+<div>Comments or questions?<br><a href="https://cugir.library.cornell.edu/">cugir.library.cornell.edu</a><br>kgj2@cornell.edu</div>
+
+</body>
+</html>

@@ -1,3 +1,3 @@
 # nygeocon-2017
 
-Slides used for presentation on the new CUGIR website, presented by Keith Jenkins at NY GeoCon 2017.
+"Reintroducting CUGIR", slides used for presentation about the new CUGIR website, at NY GeoCon 2017.
